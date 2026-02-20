@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . ./
 
 # Indica ad Apify quale file eseguire
-CMD ["python3", "-m", "apify", "run", "-p", "converter.py"]
+CMD ["python3", "converter.py"]
