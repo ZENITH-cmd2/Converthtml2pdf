@@ -1,5 +1,5 @@
 # Usa l'immagine ufficiale Apify configurata per Python e Playwright
-FROM apify/actor-python-playwright:default
+FROM apify/actor-python-playwright:3.12
 
 # Copia la lista delle dipendenze e installale
 COPY requirements.txt ./
