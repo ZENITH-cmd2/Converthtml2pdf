@@ -43,7 +43,7 @@ async def main():
         margins = {k: format_margin(v) for k, v in margins.items()}
 
         if not html_base64:
-            await Actor.fail("Errore: Nessun contenuto HTML (Data) fornito in input nel parametro 'File'.")
+            await Actor.fail(status_message="Errore: Nessun contenuto HTML (Data) fornito in input nel parametro 'File'.")
             return
 
         # Decodifica il Base64 per ottenere la stringa HTML
@@ -53,7 +53,7 @@ async def main():
                 html_base64 = html_base64.split(",")[1]
             html_content = base64.b64decode(html_base64).decode("utf-8")
         except Exception as e:
-            await Actor.fail(f"Errore nella decodifica base64 dell'HTML: {e}")
+            await Actor.fail(status_message=f"Errore nella decodifica base64 dell'HTML: {e}")
             return
 
         Actor.log.info("Codice HTML decodificato con successo. Avvio di Playwright per la generazione del PDF...")
