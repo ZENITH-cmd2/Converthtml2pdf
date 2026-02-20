@@ -102,7 +102,7 @@ async def main():
         
         # Recupera l'URL pubblico del PDF generato per inviarlo a n8n
         store = await Actor.open_key_value_store()
-        pdf_public_url = store.get_public_url("OUTPUT")
+        pdf_public_url = await store.get_public_url("OUTPUT")
         
         # Pusha i risultati nel dataset (che sarà la risposta JSON che n8n riceverà direttamente)
         await Actor.push_data([
