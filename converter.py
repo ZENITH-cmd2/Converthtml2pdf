@@ -29,9 +29,15 @@ async def main():
             elif name == "MarginTop":
                 margins["top"] = str(param.get("Value", "0"))
             elif name == "MarginBottom":
-                margins["bottom"] = str(param.get("Value", "0"))
+                margins["bottom"] = str(param.get("Value", "2cm")) # DEFAULT AL MIO MARGINE ALLA FINE
             elif name == "PageSize":
                 page_size = param.get("Value", "A4")
+
+        # Se i valori presi da n8n sono testuali vuoti o stringa "0", imposto i margini che volevi
+        if margins["top"] == "0" or not margins["top"]: margins["top"] = "1cm"
+        if margins["right"] == "0" or not margins["right"]: margins["right"] = "1cm"
+        if margins["left"] == "0" or not margins["left"]: margins["left"] = "1cm"
+        if margins["bottom"] == "0" or not margins["bottom"]: margins["bottom"] = "2cm"
 
         # Funzione helper per aggiungere "cm" ai margini se l'utente manda solo numeri > 0
         def format_margin(val):
