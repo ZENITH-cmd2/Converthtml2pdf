@@ -48,12 +48,19 @@ async def main():
 
         # Decodifica il Base64 per ottenere la stringa HTML
         try:
+             # Stampa i primi 50 caratteri del base64 ricevuto per il debug
+            Actor.log.info(f"Ricevuto HTML Base64 (primi 50 char): {html_base64[:50]}")
+            
             # Pulisce la stringa da spazi bianchi o newline indesiderati
             html_base64 = html_base64.strip()
             
+            import urllib.parse
+            # Decodifica eventuali caratteri URL-encoded passati da n8n
+            html_base64 = urllib.parse.unquote(html_base64)
+            
             # Rimuove l'eventuale prefisso "data:text/html;base64," se presente
             if "," in html_base64:
-                html_base64 = html_base64.split(",")[1]
+                html_base64 = html_base64.split(",", 1)[1]
                 
             # Aggiunge il padding (=) corretto se n8n ha inviato una stringa tagliata
             missing_padding = len(html_base64) % 4
@@ -62,7 +69,7 @@ async def main():
 
             html_content = base64.b64decode(html_base64).decode("utf-8")
         except Exception as e:
-            await Actor.fail(status_message=f"Errore nella decodifica base64 dell'HTML: {e}")
+            await Actor.fail(status_message=f"Errore nella decodifica base64: {e}. Stringa in ingresso: {html_base64[:100]}...")
             return
 
         Actor.log.info("Codice HTML decodificato con successo. Avvio di Playwright per la generazione del PDF...")
