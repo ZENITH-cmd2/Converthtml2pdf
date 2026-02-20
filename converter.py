@@ -48,14 +48,17 @@ async def main():
 
         # Decodifica il Base64 per ottenere la stringa HTML
         try:
+            # Pulisce la stringa da spazi bianchi o newline indesiderati
+            html_base64 = html_base64.strip()
+            
             # Rimuove l'eventuale prefisso "data:text/html;base64," se presente
             if "," in html_base64:
                 html_base64 = html_base64.split(",")[1]
                 
-            # Aggiunge il padding (=) se n8n ha inviato una stringa non multiplo di 4
-            padding_needed = len(html_base64) % 4
-            if padding_needed:
-                html_base64 += "=" * (4 - padding_needed)
+            # Aggiunge il padding (=) corretto se n8n ha inviato una stringa tagliata
+            missing_padding = len(html_base64) % 4
+            if missing_padding:
+                html_base64 += '=' * (4 - missing_padding)
 
             html_content = base64.b64decode(html_base64).decode("utf-8")
         except Exception as e:
